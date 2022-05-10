@@ -69,4 +69,3 @@ const styles = StyleSheet.create({
     color: "blue",
   },
 });
-//2:08
