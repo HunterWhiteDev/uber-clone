@@ -1,16 +1,48 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, SafeAreaView } from "react-native";
 import React from "react";
 import tw from "tailwind-react-native-classnames";
 import Map from "../components/Map";
-import MapView from "react-native-maps";
 import { createStackNavigator } from "@react-navigation/stack";
 import NavigateCard from "../components/NavigateCard";
 import RideOptionsCard from "../components/RideOptionsCard";
+import { setDestination } from "../slices/navSlice";
+import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import { GOOGLE_MAPS_APIKEY } from "@env";
+import { useDispatch } from "react-redux";
 const MapScreen = () => {
   const Stack = createStackNavigator();
-
+  const dispatch = useDispatch();
   return (
-    <View>
+    <SafeAreaView stlye={{ marginTop: 10 }}>
+      <GooglePlacesAutocomplete
+        nearbyPlacesAPI="GooglePlacesSearch"
+        debounce={400}
+        placeholder="Where from?"
+        styles={{
+          container: {
+            flex: 0,
+            marginTop: 40,
+          },
+          textInput: {
+            fontSize: 18,
+          },
+        }}
+        query={{
+          key: GOOGLE_MAPS_APIKEY,
+          language: "en",
+        }}
+        enablePoweredByContainer={false}
+        onPress={(data, details = null) => {
+          dispatch(
+            setDestination({
+              location: details.geometry.location,
+              description: data.description,
+            })
+          );
+        }}
+        fetchDetails={true}
+      />
+
       <View style={tw`h-1/2`}>
         <Map />
       </View>
@@ -28,7 +60,7 @@ const MapScreen = () => {
           />
         </Stack.Navigator>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

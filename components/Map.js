@@ -11,7 +11,7 @@ import {
 import MapViewDirections from "react-native-maps-directions";
 import { GOOGLE_MAPS_APIKEY } from "@env";
 import { useDispatch } from "react-redux";
-
+import * as geolib from "geolib";
 const Map = () => {
   const origin = useSelector(selectOrigin);
   const destination = useSelector(selectDestination);
@@ -23,16 +23,13 @@ const Map = () => {
       return;
     }
     mapRef.current.fitToSuppliedMarkers(["origin", "destination"], {
-      edgePadding: { top: 50, right: 50, bottom: 50, left: 50 },
+      edgePadding: { top: 10, right: 10, bottom: 10, left: 10 },
     });
-
-    console.log(origin.description);
-    console.log(destination.description);
   }, [destination, origin]);
 
   useEffect(() => {
     if (!origin || !destination) return;
-
+    mapRef.current.fitToSuppliedMarkers();
     const getTravelTime = async () => {
       fetch(
         `https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=${origin.description}&destinations=${destination.description}&key=${GOOGLE_MAPS_APIKEY}`
@@ -60,37 +57,32 @@ const Map = () => {
     >
       {origin && destination && (
         <MapViewDirections
-          origin={origin.description}
-          destination={destination.description}
+          origin={origin?.description}
+          destination={destination?.description}
           apikey={GOOGLE_MAPS_APIKEY}
           strokeWidth={3}
           strokeColor="black"
         />
       )}
-
-      {origin?.location && (
-        <Marker
-          coordinate={{
-            latitude: origin.location.lat,
-            longitude: origin.location.lng,
-          }}
-          title="Origin"
-          description={origin.description}
-          identifier="origin"
-        />
-      )}
-
-      {destination?.location && (
-        <Marker
-          coordinate={{
-            latitude: destination.location.lat,
-            longitude: destination.location.lng,
-          }}
-          title="Destination"
-          description={destination.description}
-          identifier="destination"
-        />
-      )}
+      <Marker
+        coordinate={{
+          latitude: origin?.location.lat,
+          longitude: origin?.location.lng,
+        }}
+        title="Origin"
+        description={origin?.description}
+        identifier="origin"
+      />
+      {/* {destination?.location && ( */}
+      <Marker
+        coordinate={{
+          latitude: destination?.location.lat || 0,
+          longitude: destination?.location.lng || 0,
+        }}
+        title="Destination"
+        description={destination?.description}
+        identifier="destination"
+      />
     </MapView>
   );
 };

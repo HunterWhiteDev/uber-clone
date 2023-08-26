@@ -7,44 +7,25 @@ import {
 } from "react-native";
 import React from "react";
 import tw from "tailwind-react-native-classnames";
-import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
-import { GOOGLE_MAPS_APIKEY } from "@env";
-import { useDispatch } from "react-redux";
-import { setDestination } from "../slices/navSlice";
+import { useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import NavFavorites from "./NavFavorites";
 import { Icon } from "react-native-elements";
+import { selectTravelTimeInformation } from "../slices/navSlice";
 const NavigateCard = () => {
-  const dispatch = useDispatch();
+  const time = useSelector(selectTravelTimeInformation);
+
   const navigation = useNavigation();
   return (
     <SafeAreaView style={tw`bg-white flex-1`}>
-      <Text style={tw`text-center py-5 text-xl`}>Good Morning, Hunter</Text>
-
-      <View style={tw`border-t border-gray-200 flex-shrink`}>
-        <GooglePlacesAutocomplete
-          placeholder="Where to?"
-          debounce={400}
-          nearbyPlacesAPI="GooglePlacesSearch"
-          styles={toInputBoxStyles}
-          query={{
-            key: GOOGLE_MAPS_APIKEY,
-            language: "en",
-          }}
-          returnKeyType={"search"}
-          minLength={2}
-          onPress={(data, details = null) => {
-            dispatch(
-              setDestination({
-                location: details?.geometry?.location,
-                description: data?.description,
-              })
-            );
-
-            navigation.navigate("RideOptionsCard");
-          }}
-        />
-      </View>
+      {time ? (
+        <View>
+          <Text style={toInputBoxStyles.text}>{time.distance.text}</Text>
+          <Text style={toInputBoxStyles.text}>{time.duration.text}</Text>
+        </View>
+      ) : (
+        <Text style={tw`text-center py-5 text-xl`}>Good Morning</Text>
+      )}
 
       <NavFavorites />
 
@@ -90,5 +71,10 @@ const toInputBoxStyles = StyleSheet.create({
   textInputContainer: {
     paddingHorizontal: 20,
     paddingBottom: 0,
+  },
+
+  text: {
+    textAlign: "center",
+    fontSize: 20,
   },
 });
