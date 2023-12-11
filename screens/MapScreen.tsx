@@ -7,13 +7,14 @@ import NavigateCard from "../components/NavigateCard";
 import RideOptionsCard from "../components/RideOptionsCard";
 import { setDestination } from "../slices/navSlice";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+//@ts-ignore
 import { GOOGLE_MAPS_APIKEY } from "@env";
 import { useDispatch } from "react-redux";
 const MapScreen = () => {
   const Stack = createStackNavigator();
   const dispatch = useDispatch();
   return (
-    <SafeAreaView stlye={{ marginTop: 10 }}>
+    <SafeAreaView style={{ marginTop: 10 }}>
       <GooglePlacesAutocomplete
         nearbyPlacesAPI="GooglePlacesSearch"
         debounce={400}
@@ -35,7 +36,7 @@ const MapScreen = () => {
         onPress={(data, details = null) => {
           dispatch(
             setDestination({
-              location: details.geometry.location,
+              location: details?.geometry.location,
               description: data.description,
             })
           );
