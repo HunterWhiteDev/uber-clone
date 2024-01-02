@@ -1,32 +1,14 @@
-# Getting Started
+### `Home`
 
-To login, use the following credentials:
+Choose where you're leaving from.
+![home!](https://i.imgur.com/mvJBLw1.png)
 
-email/username: `123@test.com`
+### `Destination`
 
-password: `password`
+CHoose where you want to go
+![destination!](https://i.imgur.com/GYGrCAa.png)
 
-### `Home Page`
+### `Map`
 
-Login to your account.
-![login!](https://i.imgur.com/rVQVfb3.png)
-
-### `Movies`
-
-View available movies.
-![Products!](https://i.imgur.com/D1IDxMP.jpg)
-
-### `Trailer`
-
-Watch a trailer.
-![trailer!](https://i.imgur.com/uJJmtbW.png)
-
-### `Custom List`
-
-Add movies to your list.
-![list!](https://i.imgur.com/0WGZHaC.png)
-
-### `Subscription`
-
-Manage your subscription plan.
-![sub!](https://i.imgur.com/87kPSaw.png)
+View the time and distance to your destination.
+![map!](https://i.imgur.com/H1ga9V2.png)
